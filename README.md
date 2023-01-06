@@ -1,6 +1,7 @@
 # scala-pb-sample
 
-## Jaeger起動
+## Jaegerでトレース確認
+### Jaeger起動
 ```
 docker run -d --name jaeger \
   -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 \
@@ -14,3 +15,6 @@ docker run -d --name jaeger \
   -p 9411:9411 \
   jaegertracing/all-in-one:1.24
 ```
+
+### Jaeger UIにアクセス
+http://localhost:16686
