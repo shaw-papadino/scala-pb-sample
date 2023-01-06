@@ -18,7 +18,10 @@ lazy val root = (project in file("."))
   .settings(
     name := "scala-pb-sample",
     libraryDependencies ++= Seq(
-      Libraries.grpcNetty
+      Libraries.grpcNetty,
+      Libraries.kamonBundle,
+      Libraries.kamonJaeger
     )
   )
+  .dependsOn(`contract-grpc-proto-interface`)
   .aggregate(`contract-grpc-proto-interface`)

@@ -1,10 +1,11 @@
 import io.grpc.{Server, ServerBuilder}
-import sample.helloworld.{GreeterGrpc, HelloReply, HelloRequest}
-
+import kamon.Kamon
 import scala.concurrent.{ExecutionContext, Future}
+import sample.helloworld.{GreeterGrpc, HelloReply, HelloRequest}
 
 object HelloWorldServer {
   def main(args: Array[String]): Unit = {
+    Kamon.init()
     new HelloWorldServer(ExecutionContext.global).start().awaitTermination()
   }
 
@@ -22,8 +23,10 @@ class HelloWorldServer(executionContext: ExecutionContext) { self =>
 
   private class GreeterImpl extends GreeterGrpc.Greeter {
     override def sayHello(req: HelloRequest): Future[HelloReply] = {
+      val span = Kamon.spanBuilder("sayHello").start()
       val reply = HelloReply(message = "Hello " + req.name)
       println(reply)
+      span.finish()
       Future.successful(reply)
     }
   }
