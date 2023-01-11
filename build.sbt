@@ -14,11 +14,24 @@ val `contract-grpc-proto-interface` =
       )
     )
 
+lazy val openTelemetryVersion = "1.20.1"
 lazy val root = (project in file("."))
+  .enablePlugins(JavaAgent)
   .settings(
     name := "scala-pb-sample",
     libraryDependencies ++= Seq(
       Libraries.grpcNetty
+    ),
+    javaAgents += JavaAgent(
+      "io.opentelemetry.javaagent" % "opentelemetry-javaagent" % openTelemetryVersion % "runtime"
+    ),
+    run / javaOptions ++= Seq(
+      "-Dotel.service.name=scala-pb-sample",
+      "-Dotel.exporter.otlp.endpoint=http://localhost:4317",
+      "-Dotel.traces.exporter=otlp",
+      "-Dotel.metrics.exporter=none",
+      "-Dotel.traces.sampler=always_on"
     )
   )
+  .dependsOn(`contract-grpc-proto-interface`)
   .aggregate(`contract-grpc-proto-interface`)
