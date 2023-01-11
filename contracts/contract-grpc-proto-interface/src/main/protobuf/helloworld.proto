@@ -12,6 +12,12 @@ service Greeter {
       body: "*"
     };
   }
+  rpc SayGoodbye (GoodbyeRequest) returns (GoodbyeReply) {
+    option (google.api.http) = {
+      post: "/example/goodbye"
+      body: "*"
+    };
+  }
 }
 
 message HelloRequest {
@@ -19,5 +25,12 @@ message HelloRequest {
 }
 
 message HelloReply {
+  string message = 1;
+}
+message GoodbyeRequest {
+  string name = 1;
+}
+
+message GoodbyeReply {
   string message = 1;
 }
